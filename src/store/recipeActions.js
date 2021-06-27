@@ -1,4 +1,4 @@
-import types from "../const/types";
+import types from "./reciptTypes";
 
 export const setRecipe = (recipes) => {
     return {

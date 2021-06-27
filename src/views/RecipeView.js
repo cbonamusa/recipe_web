@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectedRecipe } from "../store/actions/recipeActions";
+import { selectedRecipe } from "../store/recipeActions";
 
 function RecipeView() {
   const { recipeId } = useParams();
   const dispatch = useDispatch();
   const storeRecipe = useSelector((state) => state.recipe);
   const { image, ingredientLines, ingredients, label, mealType, cuisineType,  dishType } = storeRecipe;
- console.log(storeRecipe)
   const fetchRecipe = async () => {
     const response = await fetch(
       `https://api.edamam.com/api/recipes/v2/${recipeId}?type=public&app_id=de3ec1bc&app_key=2cb4ed6f61915e88d7d3c92051212045`
