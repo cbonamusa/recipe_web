@@ -3,6 +3,7 @@ import {BrowserRouter as Router , Switch , Route } from 'react-router-dom';
 import Header from "./components/Header";
 import RecipeView from './views/RecipeView';
 import Main from "./views/Main";
+import Footer from './components/Footer';
 
 
 function App() {
@@ -15,6 +16,8 @@ function App() {
             <Route path="/recipe/:recipeId" exact component={RecipeView} />
             <Route>404 - Sorry, Page not found</Route>
           </Switch>
+          <Footer/>
+
       </Router>
     </div>
   );

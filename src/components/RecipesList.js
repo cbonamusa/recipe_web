@@ -17,26 +17,24 @@ const RecipeList = () => {
     const API_KEY = "2cb4ed6f61915e88d7d3c92051212045";
     const API_ID = "de3ec1bc";
     const URL = `https://api.edamam.com/search?q=${text}&app_id=${API_ID}&app_key=${API_KEY}&health=${option}`;
-
     await axios
       .get(URL)
       .then((response) => {
         setDataRecipes(response.data.hits);
         console.log(URL);
+        console.log(response.data.hits)
         // dispatch(setRecipe(response.data.hits));
       })
       .catch((error) => console.error(error));
   };
 
-  useEffect(() => {
-    apiRecipesCall();
-  }, []);
+  useEffect(() => { apiRecipesCall(); }, []);
 
-  const handleChange = (event) => {
-    setText(event.target.value);
-  };
+  const handleChange = event => setText(event.target.value);
 
-  const handleSubmit = (event) => {
+  const handleSelect = event =>  setOption(event.target.value);
+
+  const handleSubmit = event => {
     event.preventDefault();
     apiRecipesCall();
   };
@@ -63,12 +61,10 @@ const RecipeList = () => {
 
         {/* Search */}
         <form className="search-form" onSubmit={handleSubmit}>
-          <select>
+          <select onChange={handleSelect}>
             {selOptions.map((el) => {
               return (
-                <option value={Object.keys(el)} onClick={() => setOption(Object.keys(el))}>
-                    {Object.values(el)}
-                </option>
+                <option value={Object.keys(el)}> {Object.values(el)} </option>
               );
             })}
           </select>
@@ -79,14 +75,13 @@ const RecipeList = () => {
             onChange={handleChange}
           />
           <input type="submit" value="Search" />
-
         </form>
 
         {/* Each item / Recipe */}
         <div className="grid" style={styles.grid}>
-          {dataRecipes.map((recipe) => {
+          {dataRecipes.map((recipe, i) => {
             return (
-              <Recipe recipe={recipe} key={recipe["recipe"]["calories"]} />
+              <Recipe recipe={recipe} key={i} />
             );
           })}
         </div>

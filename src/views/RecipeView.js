@@ -3,7 +3,7 @@ import React from 'react'
 function RecipeView() {
     return (
         <div>
-            <h3>Individual Recipe</h3>
+            <h3>Individual Recipe Information</h3>
         </div>
     )
 }
