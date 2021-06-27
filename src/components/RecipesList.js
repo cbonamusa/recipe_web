@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { setRecipe } from '../store/actions/recipeActions';
+import { setRecipe } from "../store/actions/recipeActions";
 import { useSelector, useDispatch } from "react-redux";
 import Recipe from "./Recipe";
+import { findByLabelText } from "@testing-library/dom";
 
 const RecipeList = () => {
-  const recipes = useSelector((state) => state.state);
+  const recipes = useSelector((state) => state.allRecipes.recipes);
   const dispatch = useDispatch();
-  const [data, setData] = useState([]);
+
   const [text, setText] = useState("");
+  const [dataRecipes, setDataRecipes] = useState([]);
+  const [option, setOption] = useState("vegan");
 
   const apiRecipesCall = async () => {
     const API_KEY = "2cb4ed6f61915e88d7d3c92051212045";
     const API_ID = "de3ec1bc";
-    axios
-      .get(
-        `https://api.edamam.com/search?q=${text}&app_id=${API_ID}&app_key=${API_KEY}&health=alcohol-free`
-      )
-      .then((response) => {
-        setData(response.data);
-        dispatch(setRecipe(response.data));
+    const URL = `https://api.edamam.com/search?q=${text}&app_id=${API_ID}&app_key=${API_KEY}&health=${option}`;
 
+    await axios
+      .get(URL)
+      .then((response) => {
+        setDataRecipes(response.data.hits);
+        console.log(URL);
+        // dispatch(setRecipe(response.data.hits));
       })
       .catch((error) => console.error(error));
   };
@@ -28,7 +31,6 @@ const RecipeList = () => {
   useEffect(() => {
     apiRecipesCall();
   }, []);
-  console.log('recipes', recipes)
 
   const handleChange = (event) => {
     setText(event.target.value);
@@ -39,27 +41,60 @@ const RecipeList = () => {
     apiRecipesCall();
   };
 
+  const selOptions = [
+    { "vegan": "Vegan" },
+    { "vegetarian": "Vegetarian" },
+    { "peanut-free": "Peanut free" },
+    { "soy-free": "Soy Free" },
+    { "tree-nut-free": "Tree nut free" },
+    { "high-protein": "Hight Protein" },
+    { "low-carb": "Low Carb" },
+    { "egg-free": "Egg free" },
+    { "low-sugar": "No sugar" },
+    { "red-meat-free": "Red meat free" },
+    { "gluten-free": "Gluten free" },
+  ];
+
   return (
     <>
       <div>
-        <h3>All recepies here</h3>
-        <form className="search" onSubmit={handleSubmit}>
-            <input
+        <h4>It's time to cook!:</h4>
+        <p>Search here an ingredient you want to prepare</p>
+
+        {/* Search */}
+        <form className="search-form" onSubmit={handleSubmit}>
+          <select>
+            {selOptions.map((el) => {
+              return (
+                <option value={Object.keys(el)} onClick={() => setOption(Object.keys(el))}>
+                    {Object.values(el)}
+                </option>
+              );
+            })}
+          </select>
+          <input
             type="text"
             placeholder="Writte an Ingredient"
             value={text}
             onChange={handleChange}
-            />
-            <input type="submit" value="Search" />
+          />
+          <input type="submit" value="Search" />
+
         </form>
 
-        <div className="container-grid">
-          <Recipe />
+        {/* Each item / Recipe */}
+        <div className="grid" style={styles.grid}>
+          {dataRecipes.map((recipe) => {
+            return (
+              <Recipe recipe={recipe} key={recipe["recipe"]["calories"]} />
+            );
+          })}
         </div>
-
       </div>
     </>
   );
 };
+
+const styles = {};
 
 export default RecipeList;
