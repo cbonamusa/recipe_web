@@ -15,8 +15,11 @@ h1, h2 {
     font-weight: 800;
 } 
 
-h3, h4, p {
+h3, h4, p, label {
     font-family: 'Montserrat', sans-serif;
+}
+a {
+    text-decoration: none;
 }
 
 
@@ -34,6 +37,7 @@ section {
 .search-form {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     margin: 26px 0px;
     padding: 20px 30px;
     border-radius: 6px;
@@ -41,7 +45,6 @@ section {
     input[type="text"] {
         padding: 8px 16px;
         -webkit-appearance: none;
-        min-width: 220px;
         border-color: #e4685d;
         border-radius: 6px;
         font-family: 'Montserrat', sans-serif;   
@@ -76,4 +79,15 @@ section {
         border-color: #b34a41;
         border-width: 2px;
     }
+}
+
+.recipe {
+    h3 {
+        color:#5d231f;
+    }
+    p {
+        color: black;
+        font-size: 13px;
+        line-height: 1;
+    } 
 }

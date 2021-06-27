@@ -3,27 +3,24 @@ import axios from "axios";
 import { setRecipe } from "../store/actions/recipeActions";
 import { useSelector, useDispatch } from "react-redux";
 import Recipe from "./Recipe";
-import { findByLabelText } from "@testing-library/dom";
 
 const RecipeList = () => {
-  const recipes = useSelector((state) => state.allRecipes.recipes);
   const dispatch = useDispatch();
 
   const [text, setText] = useState("");
-  const [dataRecipes, setDataRecipes] = useState([]);
-  const [option, setOption] = useState("vegan");
+  const [healthOption, sethealthOption] = useState("vegan");
+  const [dietOption, setDietOption] = useState("balanced");
+
 
   const apiRecipesCall = async () => {
     const API_KEY = "2cb4ed6f61915e88d7d3c92051212045";
     const API_ID = "de3ec1bc";
-    const URL = `https://api.edamam.com/search?q=${text}&app_id=${API_ID}&app_key=${API_KEY}&health=${option}`;
+    const URL = `https://api.edamam.com/api/recipes/v2?type=public&q=${text}&app_id=${API_ID}&app_key=${API_KEY}&diet=${dietOption}&health=${healthOption}`
     await axios
       .get(URL)
       .then((response) => {
-        setDataRecipes(response.data.hits);
-        console.log(URL);
-        console.log(response.data.hits)
-        // dispatch(setRecipe(response.data.hits));
+          console.log(response.data)
+        dispatch(setRecipe(response.data.hits));
       })
       .catch((error) => console.error(error));
   };
@@ -32,58 +29,74 @@ const RecipeList = () => {
 
   const handleChange = event => setText(event.target.value);
 
-  const handleSelect = event =>  setOption(event.target.value);
+  const handleSelectHealth = event =>  sethealthOption(event.target.value);
+  const handleSelectDiet = event =>  setDietOption(event.target.value);
+
 
   const handleSubmit = event => {
     event.preventDefault();
     apiRecipesCall();
   };
 
-  const selOptions = [
+  const healthOptions = [
+    { "alcohol-free	": "Alcohol-free" },
+    { "immuno-supportive": "Immune-Supportive" },
+    { "celery-free": "Celery-free" },
+    { "crustacean-free": "Crustcean-free" },
+    { "tree-nut-free": "Tree nut free" },
     { "vegan": "Vegan" },
     { "vegetarian": "Vegetarian" },
-    { "peanut-free": "Peanut free" },
-    { "soy-free": "Soy Free" },
-    { "tree-nut-free": "Tree nut free" },
-    { "high-protein": "Hight Protein" },
-    { "low-carb": "Low Carb" },
     { "egg-free": "Egg free" },
     { "low-sugar": "No sugar" },
     { "red-meat-free": "Red meat free" },
     { "gluten-free": "Gluten free" },
+    { "keto-friendly": "Keto" },
+
+  ];
+  const dietOptions = [
+    { "balanced": "Balanced" },
+    { "high-fiber": "High-Fiber" },
+    { "high-protein": "High-Protein" },
+    { "low-carb": "Low-Carb" },
+    { "low-fat": "Low-Fat" },
+    { "low-sodium": "Low-sodium" }
   ];
 
   return (
     <>
       <div>
-        <h4>It's time to cook!:</h4>
+        <h4>It's time to cook!</h4>
         <p>Search here an ingredient you want to prepare</p>
 
         {/* Search */}
         <form className="search-form" onSubmit={handleSubmit}>
-          <select onChange={handleSelect}>
-            {selOptions.map((el) => {
-              return (
-                <option value={Object.keys(el)}> {Object.values(el)} </option>
-              );
-            })}
-          </select>
-          <input
-            type="text"
-            placeholder="Writte an Ingredient"
-            value={text}
-            onChange={handleChange}
-          />
-          <input type="submit" value="Search" />
+            <select onChange={handleSelectHealth}>
+                {healthOptions.map((el) => {
+                    return (
+                        <option value={Object.keys(el)}> {Object.values(el)} </option>
+                    );
+                })}
+            </select>
+
+            <select onChange={handleSelectDiet}>
+                {dietOptions.map((el) => {
+                    return (
+                        <option value={Object.keys(el)}> {Object.values(el)} </option>
+                    );
+                })}
+            </select>
+            <input
+                type="text"
+                placeholder="Writte an Ingredient"
+                value={text}
+                onChange={handleChange}
+            />
+            <input type="submit" value="Search" />
         </form>
 
-        {/* Each item / Recipe */}
+        {/* Each Recipe using Redux */}
         <div className="grid" style={styles.grid}>
-          {dataRecipes.map((recipe, i) => {
-            return (
-              <Recipe recipe={recipe} key={i} />
-            );
-          })}
+           <Recipe />
         </div>
       </div>
     </>

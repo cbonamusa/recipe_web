@@ -1,15 +1,15 @@
-import {ActionTypes} from '../const/actionTypes';
+import types from "../const/types";
 
-export const setRecipe = (recipe) => {
+export const setRecipe = (recipes) => {
     return {
-        type: ActionTypes.SET_RECIPE,
-        payload: recipe
+        type: types.SET_RECIPES,
+        payload: recipes
     };
 };
 
-export const selectedRecipe = (recipe) => {
+export const selectedRecipe = (recipes) => {
     return {
-        type: ActionTypes.SELECTED_RECIPE,
-        payload: recipe
+        type: types.SELECTED_RECIPE,
+        payload: recipes
     };
 };

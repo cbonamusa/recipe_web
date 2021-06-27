@@ -1,16 +1,21 @@
-import { ActionTypes } from "../const/actionTypes";
+import types from "../const/types";
 
 const initialState = {
-    recipes: []
+    recipes: [],
 }
 export const recipeReducer = (state = initialState, {type, payload}) => {
      switch (type) {
-         case ActionTypes.SET_RECIPE:
+         case types.SET_RECIPES:
              return {...state, recipes:payload};
-             break;
-     
          default:
             return state;
-             break;
      }
+}
+export const selectedRecipeReducer = (state = {}, {type, payload}) => {
+    switch (type) {
+        case types.SELECTED_RECIPE:
+            return {...state, ...payload};
+        default:
+            return state;
+    }
 }
