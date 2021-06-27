@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { setRecipe } from "../store/recipeActions";
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 import Recipe from "./Recipe";
 
 const RecipeList = () => {

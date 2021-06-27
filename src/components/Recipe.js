@@ -15,8 +15,8 @@ function Recipe() {
         <div className="recipe-card">
           <div className="recipe-card-img">
             {image.match(/.*\.(gif|jpe?g|bmp|png)$/) != null ? 
-                (<img src={image} style={styles.recipe.image}/>) : 
-                (<img src={noimage} style={styles.recipe.image} />)
+                (<img src={image} alt="recipe" style={styles.recipe.image}/>) : 
+                (<img src={noimage} alt="recipe" style={styles.recipe.image} />)
             }
           </div>
           <div className="recipe-card-content">

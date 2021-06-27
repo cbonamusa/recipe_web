@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectedRecipe } from "../store/recipeActions";
@@ -17,7 +17,7 @@ function RecipeView() {
   };
 
   useEffect(() => {
-    if (recipeId && recipeId != "") {
+    if (recipeId && recipeId !== "") {
       fetchRecipe();
     }
   }, [recipeId]);
@@ -28,7 +28,7 @@ function RecipeView() {
       <div className="recipe">
         <h2>{label}</h2>
         <div className="image">
-          <img src={image} alt="image" />
+          <img src={image} alt="recipe" />
         </div>
         <div>
             {/* <ul> {ingredientsLines.map(el => <li key={el.foodId}>{el}</li>)}</ul> */}
